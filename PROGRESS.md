@@ -233,3 +233,13 @@ The module has not been installed or enabled in a live world. Tests and preview 
 - Added stable latest-release manifest, version-pinned ZIP download, repository/issues/changelog URLs and optional Midi recommendation. Version0.3.18 contains release metadata/documentation changes over0.3.17, no combat behavior change.
 - Added Python standard-library package validator/builder, GitHub Actions test/package checks, bug-report template and ignore rules. Release ZIP includes runtime source and original stylesheet sources/licenses; tests and contributor tooling remain in repository.
 - Full suite:109 automated tests pass. Live Foundry/multiplayer verification remains outstanding. Public remote asset verification will be recorded after upload.
+
+## Completed 2026-09-19: v0.3.18 published and public downloads verified
+
+- Public repository: https://github.com/OfficialHeyItsV/vs-combat-suite. Source/release tag v0.3.18 points to commit53556a26d85abdc09e74b85b7e89e03e86bd1b80. GitHub release includes module.json, versioned ZIP and SHA256SUMS.txt.
+- Reviewed delegated README/CHANGELOG/CONTRIBUTING work and corrected wording before publication. Documents include install/update instructions, architecture, configuration side effects, licenses, manual test checklist and release procedure.
+- Command-line Git had no authenticated credentials. Used the already connected GitHub app to publish repository objects and the authenticated browser to publish the release; no new credentials created. Local repository follows origin/main; pre-publication local commits retained on local-pre-publication.
+- GitHub Actions checks completed successfully: https://github.com/OfficialHeyItsV/vs-combat-suite/actions/runs/35472762233. All109 local automated tests passed. Packaging validated132 distribution files.
+- Downloaded the stable latest-release manifest and its version-pinned ZIP without authentication; both SHA256 hashes match local release assets, and ZIP contains vs-combat-suite/module.json. Actual installation via Foundry UI and live gameplay were not performed.
+- Stable install/update URL: https://github.com/OfficialHeyItsV/vs-combat-suite/releases/latest/download/module.json. Foundry's searchable package directory has not been submitted; manifest installation is available independently.
+- Next action: reload clients after installing/updating; perform the documented live Foundry/Midi checklist. Future releases must increment both versions and download URL, tag source, upload validated assets, and preserve stable manifest URL.
