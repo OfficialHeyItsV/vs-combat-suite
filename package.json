@@ -1,0 +1,10 @@
+{
+  "name": "vs-combat-suite",
+  "version": "0.3.18",
+  "private": true,
+  "type": "module",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "test": "node --test --test-isolation=none tests/*.test.mjs"
+  }
+}

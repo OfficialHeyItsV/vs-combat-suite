@@ -1,0 +1,25 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+test('tooltip stays over feature or popup, tolerates crossing gap, and closes outside both', async()=>{
+ const timers=new Map(),listeners=new Map(),containers=[];let next=0;
+ const trigger={contains:target=>target==='feature'};
+ const manager={activate(){},lockTooltip(){const c={removed:false,events:{},addEventListener(name,fn){this.events[name]=fn;},style:{setProperty(){}},showPopover(){},contains:t=>t==='popup',remove(){this.removed=true;}};containers.push(c);return c;},dismissLockedTooltip(c){c.remove();}};
+ const document={body:{appendChild(c){c.removed=false;}},addEventListener(name,fn){listeners.set(name,fn);},removeEventListener(name,fn){if(listeners.get(name)===fn)listeners.delete(name);},createElement:()=>({classList:{add(){}},querySelector:s=>s.includes('body')?{textContent:'Description'}:null})};
+ const context=vm.createContext({PARTIALS_PATH:'',document,setTimeout:fn=>{timers.set(++next,fn);return next;},clearTimeout:id=>timers.delete(id),foundry:{helpers:{interaction:{TooltipManager:{TOOLTIP_DIRECTIONS:{UP:'up'}}}}},ui:{VCS:{}},game:{tooltip:manager,settings:{get:()=>1}}});
+ const source=fs.readFileSync(new URL('../scripts/core/app/tooltip.js',import.meta.url),'utf8').replace(/^import .*;\s*/,'').replace('export class Tooltip','class Tooltip');
+ vm.runInContext(source+'\nthis.Tooltip=Tooltip;',context);
+ const first=new context.Tooltip({},trigger);first._renderInner=async()=>{};await first.render();
+ const move=target=>listeners.get('pointermove')({target});
+ move('feature');assert.equal(timers.size,0);assert.equal(containers[0].removed,false);
+ move('gap');assert.equal(timers.size,1);
+ move('popup');assert.equal(timers.size,0);
+ move('gap');move('feature');assert.equal(timers.size,0);
+ const second=new context.Tooltip({},trigger);second._renderInner=async()=>{};await second.render();
+ assert.equal(containers[0].removed,true);assert.equal(containers[1].removed,false);
+ move('popup');
+ containers[1].events.pointerleave();
+ assert.equal(timers.size,0, 'leaving the popup dismisses immediately without a grace timer');
+ assert.equal(containers[1].removed,true);assert.equal(listeners.size,0);assert.equal(context.ui.VCS._tooltip,null);
+});

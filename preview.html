@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>V's Combat Suite preview</title>
+    <link rel="stylesheet" href="styles/core.css">
+    <link rel="stylesheet" href="styles/dnd5e.css">
+    <link rel="stylesheet" href="styles/suite.css">
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        background: #0b1114;
+        color: #edf5f4;
+      }
+
+      .preview-shell {
+        background:
+          radial-gradient(circle at 78% 18%, rgba(47, 113, 117, 0.17), transparent 32rem),
+          radial-gradient(circle at 16% 100%, rgba(34, 53, 61, 0.25), transparent 28rem),
+          #0b1114;
+        min-height: 100vh;
+        overflow: hidden;
+        padding: 2rem 2.25rem 1rem;
+      }
+
+      .preview-header {
+        align-items: flex-end;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto 1.25rem;
+        max-width: 1320px;
+      }
+
+      .preview-kicker {
+        color: #61d0c8;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        margin: 0 0 0.72rem;
+        text-transform: uppercase;
+      }
+
+      .preview-header h1 {
+        font-size: clamp(1.55rem, 2.3vw, 2.2rem);
+        font-weight: 700;
+        letter-spacing: -0.035em;
+        margin: 0;
+      }
+
+      .preview-header p {
+        color: #9aabad;
+        font-size: 0.84rem;
+        line-height: 1.5;
+        margin: 0.55rem 0 0;
+        max-width: 39rem;
+      }
+
+      .preview-status {
+        align-items: center;
+        border: 1px solid rgba(97, 208, 200, 0.28);
+        border-radius: 999px;
+        color: #baf6e8;
+        display: inline-flex;
+        font-size: 0.67rem;
+        font-weight: 750;
+        gap: 0.48rem;
+        letter-spacing: 0.12em;
+        padding: 0.58rem 0.82rem;
+        text-transform: uppercase;
+      }
+
+      .preview-status::before {
+        background: #61d0c8;
+        border-radius: 999px;
+        box-shadow: 0 0 12px rgba(97, 208, 200, 0.7);
+        content: "";
+        height: 0.42rem;
+        width: 0.42rem;
+      }
+
+      .preview-stage {
+        background:
+          linear-gradient(90deg, rgba(208, 231, 229, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(208, 231, 229, 0.035) 1px, transparent 1px),
+          linear-gradient(145deg, rgba(27, 41, 47, 0.78), rgba(10, 16, 19, 0.9));
+        background-size: 52px 52px, 52px 52px, auto;
+        border: 1px solid rgba(208, 231, 229, 0.12);
+        border-radius: 24px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+        margin: 0 auto;
+        max-width: 1320px;
+        min-height: 470px;
+        overflow: hidden;
+        padding: 4.6rem 2rem 2rem;
+        position: relative;
+      }
+
+      .preview-stage::before {
+        background: linear-gradient(90deg, #61d0c8, transparent 58%);
+        content: "";
+        height: 1px;
+        left: 2.5rem;
+        opacity: 0.5;
+        position: absolute;
+        right: 2.5rem;
+        top: 4rem;
+      }
+
+      .preview-stage::after {
+        color: rgba(169, 184, 185, 0.46);
+        content: "ACTIVE TURN  /  SERAPHINE VALE  /  ROUND 04";
+        font-size: 0.61rem;
+        font-weight: 750;
+        letter-spacing: 0.15em;
+        position: absolute;
+        right: 2.5rem;
+        text-transform: uppercase;
+        top: 3.65rem;
+      }
+
+      .preview-stage .vcs-combat-hud {
+        align-items: flex-end;
+        --vcs-hud-scale: 0.58;
+        bottom: 1.6rem;
+        left: 50%;
+        max-width: 1150px;
+        min-height: 390px;
+        position: absolute;
+        transform: translateX(-50%) scale(0.58);
+        transform-origin: bottom center;
+        width: max-content;
+      }
+
+      .preview-stage .vcs-combat-hud::before {
+        left: 0;
+        right: auto;
+        top: -1.85rem;
+      }
+
+      .preview-stage .vcs-combat-hud .portrait-hud {
+        background: #18262c;
+        height: 375px;
+        min-height: 375px;
+        min-width: 375px;
+        width: 375px;
+      }
+
+      .preview-stage .vcs-combat-hud .portrait-hud-image {
+        background-position: center;
+      }
+
+      .preview-stage .vcs-combat-hud .action-hud {
+        align-items: flex-end;
+      }
+
+      .preview-stage .vcs-combat-hud .action-hud .actions-container {
+        margin-right: 0;
+      }
+
+      .preview-stage .vcs-combat-hud .action-hud .action-element {
+        min-height: 188px;
+        min-width: 142px;
+      }
+
+      .preview-stage .vcs-combat-hud .ability-menu {
+        bottom: calc(100% + 1.35rem);
+        left: 0;
+        width: 375px;
+      }
+
+      .preview-stage .vcs-combat-hud .ability-menu ul:first-child {
+        max-height: 210px;
+      }
+
+      .preview-stage .vcs-combat-hud .preview-drawer-label {
+        color: #a9b8b9;
+        font-size: 0.6rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        padding: 0.7rem 0.85rem 0.35rem;
+        text-transform: uppercase;
+      }
+
+      .preview-stage .vcs-combat-hud .player-button {
+        background: rgba(18, 27, 32, 0.94);
+        border: 1px solid rgba(208, 231, 229, 0.18);
+        border-radius: 10px;
+        color: #a9b8b9;
+      }
+
+      .preview-stage .vcs-combat-hud .ability-menu ul > li[class*="proficiency-"]::before {
+        content: none;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
+
+      .preview-stage .vcs-combat-hud .ability-menu ul.ability-toggle li::after {
+        content: "⌄";
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
+
+      .preview-note {
+        color: rgba(169, 184, 185, 0.62);
+        font-size: 0.72rem;
+        letter-spacing: 0.02em;
+        margin: 1.55rem auto 0;
+        max-width: 1320px;
+      }
+
+      @media (max-width: 1100px) {
+        .preview-shell {
+          padding-left: 1.25rem;
+          padding-right: 1.25rem;
+        }
+
+        .preview-header {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 1.2rem;
+        }
+
+        .preview-stage {
+          overflow-x: auto;
+          padding-left: 1.25rem;
+          padding-right: 1.25rem;
+        }
+
+        .preview-stage::before {
+          left: 1.25rem;
+          right: 1.25rem;
+        }
+
+        .preview-stage::after {
+          right: 1.5rem;
+        }
+      }
+    .preview-stage .ability-menu li::before { display: none !important; }
+</style>
+  </head>
+  <body class="vcs-show-ability-menu">
+    <main class="preview-shell">
+      <header class="preview-header">
+        <div>
+          <p class="preview-kicker">V's Combat Suite · D&amp;D5e</p>
+          <h1>A focused view for the moment that matters.</h1>
+          <p>A representative combat HUD using the module's real component classes, local assets, and slate / teal theme layer.</p>
+        </div>
+        <div class="preview-status">Preview scene · Ready</div>
+      </header>
+
+      <section class="preview-stage" aria-label="V's Combat Suite combat HUD preview">
+        <div class="vcs-combat-hud loaded fade-out-inactive-false">
+          <section class="portrait-hud">
+            <div class="portrait-hud-image" style="background-image: linear-gradient(145deg, rgba(12, 31, 36, 0.05), rgba(11, 16, 20, 0.64)), url('icons/mighty-force.webp');"></div>
+            <div class="portrait-stat-block player-details player-details-bottom">
+              <span class="player-name">Seraphine Vale</span>
+              <span class="player-detail">Level 7 · Circle of Stars</span>
+              <div class="effects-container">
+                <img class="effect-icon" src="icons/bolt-spell-cast.webp" alt="Concentration">
+                <img class="effect-icon" src="icons/dodging.webp" alt="Dodge">
+                <img class="effect-icon" src="icons/duration.webp" alt="Bless">
+              </div>
+            </div>
+            <div class="player-buttons">
+              <button class="player-button" type="button" aria-label="Minimize HUD">−</button>
+              <button class="player-button" type="button" aria-label="Open actor configuration">⚙</button>
+            </div>
+            <div class="portrait-actor-configuration"><span aria-hidden="true">⚙</span></div>
+          </section>
+
+          <section class="movement-hud" aria-label="Movement">
+            <div class="movement-spaces">
+              <span class="movement-space base-movement"></span>
+              <span class="movement-space base-movement"></span>
+              <span class="movement-space base-movement"></span>
+              <span class="movement-space base-movement"></span>
+              <span class="movement-space dash-movement"></span>
+              <span class="movement-space"></span>
+            </div>
+            <div class="movement-text">
+              <div><span class="movement-current">30</span> <span aria-hidden="true">◆</span></div>
+              <span style="font-size: 0.68rem; letter-spacing: 0.11em; text-transform: uppercase;">of 45 ft</span>
+            </div>
+          </section>
+
+          <section class="action-hud" aria-label="Actions">
+            <div class="weapon-sets" aria-label="Weapon sets">
+              <div class="weapon-set active" data-type="switchWeapons" data-set="1">
+                <div class="set set-primary" style="background-image: url('icons/crossed-swords.webp');"></div>
+                <div class="set set-secondary" style="background-image: url('icons/shield-bash.webp');"></div>
+              </div>
+            </div>
+            <div class="actions-container has-actions" data-title="Main Action">
+              <div class="action-element vcs-blur active" style="background-image: url('icons/crossed-swords.webp');">
+                <span class="action-element-title">Starfall blade</span>
+              </div>
+              <div class="action-element vcs-blur bonus-action" style="background-image: url('icons/bolt-spell-cast.webp');">
+                <span class="action-element-title">Guiding bolt</span>
+              </div>
+              <div class="action-element vcs-blur free-action" style="background-image: url('icons/walking-boot.webp');">
+                <span class="action-element-title">Dash</span>
+              </div>
+              <div class="action-element vcs-blur reaction" style="background-image: url('icons/shield-bash.webp');">
+                <span class="action-element-title">Shield ward</span>
+              </div>
+              <div class="actions-uses-container" aria-label="Actions remaining">
+                <span class="action-pip"></span>
+                <span class="action-pip"></span>
+              </div>
+            </div>
+          </section>
+
+          <aside class="ability-menu" aria-label="Ability drawer">
+            <div class="preview-drawer-label">Character drawer</div>
+            <ul class="collapsible-panel" data-index="0" style="max-height: 210px;">
+              <li class="ability ability-title" style="grid-template-columns: 1fr 75px 75px;"><span>Ability</span><span style="text-align: center;">Check</span><span style="text-align: center;">Passive</span></li>
+              <li class="ability proficiency-is-proficient" style="grid-template-columns: 1fr 75px 75px;"><span class="ability-name">Wisdom</span><span class="ability-modifier" style="text-align: center;">+4</span><span class="ability-passive" style="text-align: center;">14</span></li>
+              <li class="ability proficiency-is-expertise" style="grid-template-columns: 1fr 75px 75px;"><span class="ability-name">Perception</span><span class="ability-modifier" style="text-align: center;">+7</span><span class="ability-passive" style="text-align: center;">17</span></li>
+              <li class="ability proficiency-is-half-proficiency" style="grid-template-columns: 1fr 75px 75px;"><span class="ability-name">Stealth</span><span class="ability-modifier" style="text-align: center;">+2</span><span class="ability-passive" style="text-align: center;">12</span></li>
+            </ul>
+            <ul class="ability-toggle">
+              <li class="ability ability-title active" data-index="0">Abilities</li>
+              <li class="ability ability-title" data-index="1">Skills</li>
+              <li class="ability ability-title" data-index="2">Tools</li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="vcs-tooltip-container" aria-hidden="true" style="display:none">
+          <div class="vcs-tooltip">
+            <div class="vcs-tooltip-header">
+              <h2>Starfall Blade</h2>
+              <h4 class="vcs-tooltip-subtitle">Main action</h4>
+            </div>
+            <div class="vcs-tooltip-body">
+              <div class="vcs-tooltip-description">A measured strike that leaves a pale trail across the dark.</div>
+              <div class="vcs-tooltip-details">
+                <div><span>Target</span><span>One creature</span></div>
+                <div><span>Range</span><span>5 ft</span></div>
+                <div><span>Damage</span><span>1d8 + 4 slashing</span></div>
+              </div>
+              <div class="vcs-tooltip-properties">
+                <h3>Properties</h3>
+                <span class="vcs-tooltip-badge damt">Melee</span>
+                <span class="vcs-tooltip-badge prop">Versatile</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="preview-note">Static visual reference. Interactions shown here are representative; Foundry supplies live data and event behavior.</p>
+    </main>
+  </body>
+</html>
+
+
+
+

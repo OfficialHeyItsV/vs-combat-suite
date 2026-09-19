@@ -1,0 +1,174 @@
+.ech-tooltip-container {
+    padding: 0;
+    box-shadow: 0px 0px 10px rgb(0 0 0);
+    background: transparent;
+    backdrop-filter: unset;
+    scale: var(--ech-tooltip-scale);
+
+    &.ech-tooltip-up {
+        transform-origin: bottom center;
+    }
+    &.ech-tooltip-down {
+        transform-origin: top center;
+    }
+    &.ech-tooltip-left {
+        transform-origin: center right;
+    }
+    &.ech-tooltip-right {
+        transform-origin: center left;
+    }
+}
+
+.ech-tooltip {
+    border-radius: 3px;
+    display: inline-block;
+    font-size: 16px;
+    height: fit-content;
+    max-width: 400px;
+    position: relative;
+    text-align: left;
+    max-height: 50vh;
+    overflow-y: auto;
+    z-index: 10000;
+    pointer-events: all;
+
+    &.ech-locked {
+        outline: 2px solid var(--ech-tooltip-header-background);
+    }
+
+    .content-link {
+        background-color: transparent;
+        border: none;
+        text-decoration: underline;
+    }
+
+    &.ability-tooltip {
+        transform-origin: left center;
+    }
+
+    &:not(:has(.ech-tooltip-subtitle)) .ech-tooltip-header h2 {
+        margin: 0;
+    }
+
+    .ech-tooltip-header {
+        backdrop-filter: var(--ech-blur-amount);
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        padding: 1rem 0.5rem 2rem;
+        position: relative;
+        text-align: center;
+        h2 {
+            margin-bottom: 0.5rem;
+        }
+    }
+    &.hide-subtitle .ech-tooltip-header {
+        padding: 1rem 0.5rem;
+    }
+    .ech-tooltip-header h2 {
+        border-width: 0px;
+        color: var(--ech-tooltip-header-color);
+    }
+    .ech-tooltip-subtitle {
+        border-radius: 3px;
+        left: 50%;
+        margin-bottom: 0px;
+        padding: 0.5rem 1rem;
+        position: absolute;
+        top: 0px;
+        transform: translate(-50%, -17.5px);
+        z-index: 10000;
+        text-wrap: nowrap;
+    }
+    &.hide-subtitle .ech-tooltip-subtitle {
+        display: none;
+    }
+
+    .ech-tooltip-body {
+        backdrop-filter: var(--ech-blur-amount);
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        padding: 2rem 1rem 1rem;
+        text-align: left;
+        position: relative;
+    }
+    .ech-tooltip-body:empty {
+            display: none;
+        }
+    &.hide-subtitle .ech-tooltip-body {
+        padding: 1rem;
+    }
+    .ech-tooltip-body .ech-tooltip-description {
+        margin-bottom: 0.5rem;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        max-height: 200px;
+        padding: 0rem 1rem;
+        overflow: auto;
+        scroll-behavior: smooth;
+    }
+    .ech-tooltip-body .ech-tooltip-description a.entity-link {
+        border-radius: 0.25rem;
+        display: inline-block;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        margin-right: 0.25rem;
+        padding: 0.35em 0.65em;
+        text-align: center;
+        vertical-align: baseline;
+        white-space: nowrap;
+        word-break: break-all;
+    }
+    .ech-tooltip-body .ech-tooltip-details {
+        display: grid;
+        gap: 1rem;
+    }
+    .ech-tooltip-body .ech-tooltip-details > div {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+    }
+    &.hideTargetRange .ech-tooltip-details > div {
+        display: none;
+    }
+    .ech-tooltip-body .ech-tooltip-details > div > span {
+        padding: 0.25rem 0rem;
+    }
+    .ech-tooltip-body .ech-tooltip-details > div > span:first-child {
+        opacity: 0.6;
+        text-transform: uppercase;
+    }
+    .ech-tooltip-body .ech-tooltip-details > div > span:last-child {
+        font-size: 1.3rem;
+    }
+    .ech-tooltip-body .ech-tooltip-properties {
+        margin-top: 1rem;
+    }
+    &.hideProperties .ech-tooltip-body .ech-tooltip-properties {
+        display: none;
+    }
+    .ech-tooltip-body .ech-tooltip-properties h3 {
+        opacity: 0.6;
+        text-transform: uppercase;
+        border: none;
+    }
+    .ech-tooltip-body .ech-tooltip-properties .ech-tooltip-badge {
+        border-radius: 0.25rem;
+        display: inline-block;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        margin-right: 0.25rem;
+        padding: 0.35em 0.65em;
+        text-align: center;
+        vertical-align: baseline;
+        white-space: nowrap;
+    }
+
+    .ech-tooltip:hover + .extended-combat-hud {
+        opacity: 1;
+        transition-delay: 0s;
+    }
+}

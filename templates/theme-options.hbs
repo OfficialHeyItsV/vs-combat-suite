@@ -1,0 +1,52 @@
+<div>
+	<h3 class="flexrow">
+		V's Combat Suite: Theme Options
+        <button type="button" name="export" data-tooltip="vs-combat-suite.themeOptions.savePermanent.tooltip">
+            <i class="fas fa-file-export"></i>{{localize 'vs-combat-suite.themeOptions.savePermanent.label'}}
+        </button>
+	</h3>
+	<hr/>
+	<div class="form-group" style="display: none;">
+		<label>{{localize 'vs-combat-suite.themeOptions.fontFamilyTitle'}}</label>
+		<div class="form-fields">
+			<input type="text" name="font" value="{{themeOptions.font}}" data-dtype="String">
+		</div>
+		<p class="notes">{{localize 'vs-combat-suite.themeOptions.fontFamilyHint'}}</p>
+    </div>
+	<div class="form-group">
+		<label>{{localize 'vs-combat-suite.themeOptions.themeTitle'}}</label>
+		<div class="form-fields">
+			<select name="theme">
+				<option value="custom" selected="">Custom</option>
+			</select>
+		</div>
+		<p class="hint">{{localize 'vs-combat-suite.themeOptions.themeHint'}}</p>
+    </div>
+	<ul class="vcsThemeOptionsContainer">
+	{{#each themeOptions.colors}}
+		<li>
+			<h4 class="toggleOptions">{{vcsLocalize @key}}</h4>
+			<ul>
+			{{#each this}}
+				{{#vcsIfObject this}}
+				<li>
+					{{vcsLocalize @../key @key}}
+					{{#each this}}
+						<div>
+							<vcs-alpha-color-picker class="color-picker" name="colors.{{@../../key}}.{{@../key}}.{{@key}}" data-color-type="{{@key}}" value="{{this}}"  data-responsive-color></vcs-alpha-color-picker>
+							<color-alpha-picker id="picker1" name="testColor" value="#ff5500aa"></color-alpha-picker>
+						</div>
+					{{/each}}
+				{{else}}
+					<div>
+						<color-picker class="color-picker" name="colors.{{@../key}}.{{@key}}" data-color-type="{{@key}}" value="{{this}}"  data-responsive-color></color-picker>
+					</div>
+
+				</li>
+				{{/vcsIfObject}}
+			{{/each}}
+			</ul>
+		</li>
+	{{/each}}
+	</ul>
+</div>

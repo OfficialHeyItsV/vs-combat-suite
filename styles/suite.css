@@ -1,0 +1,518 @@
+/*
+ * V's Combat Suite visual layer
+ *
+ * The fork keeps Argon's component geometry in core.css and uses this file
+ * for the quieter slate/teal treatment. Every selector is rooted in a Suite
+ * surface so Foundry's application chrome keeps its own styles.
+ */
+
+.vcs-combat-hud,
+.vcs-tooltip,
+.application:has(.tsa-dialog) {
+  --vcs-suite-ink: #edf5f4;
+  --vcs-suite-muted: #a9b8b9;
+  --vcs-suite-faint: #708386;
+  --vcs-suite-line: rgba(208, 231, 229, 0.18);
+  --vcs-suite-line-strong: rgba(208, 231, 229, 0.32);
+  --vcs-suite-surface: rgba(18, 27, 32, 0.94);
+  --vcs-suite-surface-raised: rgba(27, 39, 45, 0.96);
+  --vcs-suite-surface-soft: rgba(42, 57, 63, 0.86);
+  --vcs-suite-teal: #61d0c8;
+  --vcs-suite-teal-bright: #a5efdf;
+  --vcs-suite-teal-deep: #2e797d;
+  --vcs-suite-main-accent: #61d0c8;
+  --vcs-suite-radius: 14px;
+  --vcs-suite-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
+  --vcs-blur-amount: blur(16px) saturate(120%);
+  --vcs-font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  color: var(--vcs-suite-ink);
+  font-family: var(--vcs-font-family);
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+}
+
+.vcs-combat-hud .portrait-hud,
+.vcs-combat-hud .movement-hud,
+.vcs-combat-hud .action-hud .actions-container,
+.vcs-combat-hud .ability-menu,
+.vcs-combat-hud .weapon-sets .weapon-set {
+  border-color: var(--vcs-suite-line);
+  box-shadow: var(--vcs-suite-shadow);
+}
+
+.vcs-combat-hud .portrait-hud {
+  background-color: var(--vcs-suite-surface);
+  border-radius: var(--vcs-suite-radius);
+  overflow: hidden;
+}
+
+.vcs-combat-hud .portrait-hud::after {
+  background: linear-gradient(130deg, rgba(97, 208, 200, 0.16), transparent 38%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.vcs-combat-hud .portrait-hud .death-save-btn {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  cursor: pointer;
+  height: auto;
+  line-height: 1;
+  padding: 0;
+  width: auto;
+}
+
+.vcs-combat-hud .portrait-hud .death-save-btn:focus-visible {
+  outline: 2px solid var(--vcs-suite-teal-bright);
+  outline-offset: 5px;
+}
+
+.vcs-combat-hud .portrait-hud .death-save-btn:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.vcs-combat-hud .portrait-hud .portrait-hud-image {
+  filter: saturate(0.82) contrast(1.08);
+  transform: scale(1.015);
+  transition: filter 180ms ease, transform 180ms ease;
+}
+
+.vcs-combat-hud .portrait-hud:hover .portrait-hud-image {
+  filter: saturate(0.98) contrast(1.08);
+  transform: scale(1.035);
+}
+
+.vcs-combat-hud .portrait-hud .portrait-stat-block.player-details {
+  background: linear-gradient(180deg, rgba(10, 16, 19, 0.08), rgba(10, 16, 19, 0.94) 80%);
+  color: var(--vcs-suite-ink);
+  padding: 1.15rem 1.25rem 1.25rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.58);
+}
+
+.vcs-combat-hud .portrait-hud .portrait-stat-block.player-details .player-name {
+  font-size: max(1rem, calc(15px / var(--vcs-hud-scale, 1)));
+  font-weight: 750;
+  letter-spacing: 0.02em;
+}
+
+.vcs-combat-hud .portrait-hud .portrait-stat-block.player-details .player-detail {
+  color: rgba(237, 245, 244, 0.74);
+  font-size: max(0.7rem, calc(10px / var(--vcs-hud-scale, 1)));
+  font-weight: 550;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.vcs-combat-hud .portrait-hud .portrait-stat-block.player-details .effects-container {
+  gap: 0.38rem;
+  margin-top: 0.46rem;
+}
+
+.vcs-combat-hud .portrait-hud .portrait-stat-block.player-details .effects-container .effect-icon {
+  border: 1px solid rgba(165, 239, 223, 0.44);
+  border-radius: 7px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+  height: 1.8rem;
+  object-fit: cover;
+  width: 1.8rem;
+}
+
+.vcs-combat-hud .portrait-hud .portrait-actor-configuration {
+  color: var(--vcs-suite-muted);
+  font-size: 1.45rem;
+  opacity: 0;
+  padding: 0.85rem;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.vcs-combat-hud .portrait-hud:hover .portrait-actor-configuration,
+.vcs-combat-hud .portrait-hud .portrait-actor-configuration:focus-within {
+  opacity: 1;
+}
+
+.vcs-combat-hud .portrait-hud .portrait-actor-configuration:hover {
+  color: var(--vcs-suite-teal-bright);
+}
+
+.vcs-combat-hud .movement-hud {
+  background: linear-gradient(180deg, rgba(26, 39, 44, 0.9), rgba(13, 21, 25, 0.94));
+  border-radius: 0 var(--vcs-suite-radius) var(--vcs-suite-radius) 0;
+  color: var(--vcs-suite-muted);
+}
+
+.vcs-combat-hud .movement-hud .movement-current {
+  color: var(--vcs-suite-teal-bright);
+  font-weight: 750;
+}
+
+.vcs-combat-hud .movement-hud .movement-spaces .movement-space {
+  border-radius: 5px;
+  height: 20px;
+  margin: 0.36rem 0.3rem;
+  width: 20px;
+}
+
+.vcs-combat-hud .movement-hud .movement-spaces .movement-space.base-movement {
+  background: var(--vcs-suite-teal);
+  box-shadow: 0 0 13px rgba(97, 208, 200, 0.42);
+}
+
+.vcs-combat-hud .movement-hud .movement-spaces .movement-space.dash-movement {
+  background: #d3bc68;
+  box-shadow: 0 0 13px rgba(211, 188, 104, 0.32);
+}
+
+.vcs-combat-hud .movement-hud .movement-spaces .movement-space.danger-movement {
+  background: #d57b78;
+  box-shadow: 0 0 13px rgba(213, 123, 120, 0.32);
+}
+
+.vcs-combat-hud .action-hud .actions-container {
+  background: rgba(10, 17, 20, 0.56);
+  border-radius: var(--vcs-suite-radius);
+  gap: 0.55rem;
+  padding: 0 0.65rem;
+}
+
+.vcs-combat-hud .action-hud .actions-container::before {
+  background: rgba(18, 27, 32, 0.9);
+  border-color: var(--vcs-suite-line);
+  border-radius: 0 0 var(--vcs-suite-radius) var(--vcs-suite-radius);
+  color: var(--vcs-suite-muted);
+  font-size: max(0.68rem, calc(10px / var(--vcs-hud-scale, 1)));
+  font-weight: 750;
+  letter-spacing: 0.16em;
+}
+
+.vcs-combat-hud .action-hud .actions-container .action-pip {
+  background: var(--vcs-suite-teal);
+  border-radius: 99px;
+  box-shadow: 0 0 12px rgba(97, 208, 200, 0.42);
+  height: 6px;
+}
+
+.vcs-combat-hud .action-hud .actions-container .action-pip.actions-used {
+  background: rgba(112, 131, 134, 0.54);
+  box-shadow: none;
+}
+
+.vcs-combat-hud .action-hud .action-element,
+.vcs-combat-hud .action-hud .button-hud-button {
+  background-color: var(--vcs-suite-surface-raised);
+  border: 1px solid var(--vcs-suite-line);
+  border-radius: var(--vcs-suite-radius);
+  box-shadow: 0 9px 25px rgba(0, 0, 0, 0.25);
+  color: var(--vcs-suite-ink);
+  overflow: hidden;
+  transform: translateY(0);
+  transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.vcs-combat-hud .action-hud .action-element::before {
+  /* These cards paint their icons as backgrounds. Blurring their backdrop
+     also blurs those icons once the card creates a stacking context. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-radius: inherit;
+}
+
+.vcs-combat-hud .action-hud .action-element::after {
+  background: var(--vcs-suite-main-accent);
+  bottom: 0;
+  content: "";
+  height: 3px;
+  left: 0;
+  opacity: 0.85;
+  position: absolute;
+  right: 0;
+}
+
+.vcs-combat-hud .action-hud .action-element:hover,
+.vcs-combat-hud .action-hud .action-element:focus-visible,
+.vcs-combat-hud .action-hud .action-element.active {
+  background-color: rgba(39, 57, 62, 0.98);
+  border-color: rgba(165, 239, 223, 0.52);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(97, 208, 200, 0.08);
+  transform: translateY(-4px);
+}
+
+.vcs-combat-hud .action-hud .action-element .action-element-title {
+  background: linear-gradient(180deg, rgba(17, 26, 30, 0.1), rgba(17, 26, 30, 0.94));
+  color: var(--vcs-suite-ink);
+  font-size: max(0.69rem, calc(11px / var(--vcs-hud-scale, 1)));
+  line-height: 1.15;
+  font-weight: 750;
+  letter-spacing: 0.11em;
+  padding: 0.72rem 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+.vcs-combat-hud .action-hud .action-element.bonus-action {
+  --vcs-suite-main-accent: #ad94ef;
+  background-color: rgba(48, 40, 73, 0.96);
+  border-color: rgba(173, 148, 239, 0.32);
+}
+
+.vcs-combat-hud .action-hud .action-element.free-action {
+  --vcs-suite-main-accent: #76bde2;
+  background-color: rgba(31, 57, 73, 0.96);
+  border-color: rgba(118, 189, 226, 0.32);
+}
+
+.vcs-combat-hud .action-hud .action-element.reaction {
+  --vcs-suite-main-accent: #e09b83;
+  background-color: rgba(75, 46, 52, 0.96);
+  border-color: rgba(224, 155, 131, 0.32);
+}
+
+.vcs-combat-hud .action-hud .action-element.end-turn {
+  --vcs-suite-main-accent: #9fd09a;
+  background-color: rgba(38, 65, 48, 0.96);
+  border-color: rgba(159, 208, 154, 0.32);
+}
+
+.vcs-combat-hud .action-hud .action-element.has-count::before,
+.vcs-combat-hud .action-hud .quantity-1 .border-triangle,
+.vcs-combat-hud .action-hud .quantity-2 .border-triangle {
+  border-top-color: var(--vcs-suite-main-accent);
+}
+
+.vcs-combat-hud .action-hud .quantity-1,
+.vcs-combat-hud .action-hud .quantity-2 {
+  color: #0c1719;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.vcs-combat-hud .action-hud .feature-element {
+  border-color: var(--vcs-suite-line);
+  border-radius: 10px;
+  color: var(--vcs-suite-ink);
+}
+
+.vcs-combat-hud .action-hud .feature-element-title {
+  background: rgba(11, 18, 21, 0.78);
+  border-color: var(--vcs-suite-line);
+  font-size: max(0.62rem, calc(9px / var(--vcs-hud-scale, 1)));
+  letter-spacing: 0.08em;
+}
+
+.vcs-combat-hud .ability-menu {
+  background: rgba(18, 27, 32, 0.96);
+  border-radius: var(--vcs-suite-radius);
+  color: var(--vcs-suite-ink);
+  font-size: max(0.76rem, calc(10px / var(--vcs-hud-scale, 1)));
+  overflow: hidden;
+}
+
+.vcs-combat-hud .ability-menu::before {
+  background: linear-gradient(145deg, rgba(97, 208, 200, 0.12), transparent 48%), rgba(18, 27, 32, 0.92);
+  border-color: var(--vcs-suite-line);
+  border-radius: inherit;
+}
+
+.vcs-combat-hud .ability-menu ul > li {
+  border-color: var(--vcs-suite-line);
+  color: var(--vcs-suite-muted);
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.vcs-combat-hud .ability-menu ul > li.ability-title,
+.vcs-combat-hud .ability-menu ul.ability-toggle li {
+  color: var(--vcs-suite-ink);
+  font-size: max(0.64rem, calc(10px / var(--vcs-hud-scale, 1)));
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.vcs-combat-hud .ability-menu ul.ability-toggle li {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: var(--vcs-suite-line);
+  padding: 0.76rem 0.85rem;
+}
+
+.vcs-combat-hud .ability-menu ul.ability-toggle li:hover,
+.vcs-combat-hud .ability-menu ul.ability-toggle li.active {
+  background: rgba(97, 208, 200, 0.12);
+  color: var(--vcs-suite-teal-bright);
+}
+
+.vcs-combat-hud .ability-menu ul > li .ability-name:hover,
+.vcs-combat-hud .ability-menu ul > li.is-save > div > span:hover {
+  color: var(--vcs-suite-teal-bright);
+}
+
+.vcs-combat-hud .ability-menu ul > li .ability-code,
+.vcs-combat-hud .ability-menu ul > li .ability-passive {
+  color: var(--vcs-suite-faint);
+}
+
+.vcs-combat-hud .weapon-sets .weapon-set {
+  background: rgba(18, 27, 32, 0.92);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.vcs-combat-hud :is(button, [role="button"], .action-element, .button-hud-button, .ability, .player-button):focus-visible,
+.vcs-tooltip :is(a, button, [role="button"]):focus-visible {
+  outline: 2px solid var(--vcs-suite-teal-bright);
+  outline-offset: 3px;
+}
+
+.vcs-tooltip-container {
+  --vcs-tooltip-scale: 1;
+}
+
+.vcs-tooltip {
+  --vcs-suite-ink: #edf5f4;
+  --vcs-suite-muted: #a9b8b9;
+  --vcs-suite-line: rgba(208, 231, 229, 0.2);
+  --vcs-suite-surface: rgba(18, 27, 32, 0.98);
+  --vcs-suite-teal: #61d0c8;
+  border: 1px solid var(--vcs-suite-line);
+  border-radius: 12px;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.4);
+  color: var(--vcs-suite-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+.vcs-tooltip .vcs-tooltip-header {
+  background: linear-gradient(130deg, rgba(97, 208, 200, 0.2), rgba(18, 27, 32, 0.98) 64%);
+  border-color: var(--vcs-suite-line);
+  color: var(--vcs-suite-ink);
+  padding: 0.92rem 1rem 1.65rem;
+}
+
+.vcs-tooltip .vcs-tooltip-header h2 {
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.vcs-tooltip .vcs-tooltip-subtitle {
+  background: var(--vcs-suite-teal);
+  border-color: var(--vcs-suite-teal);
+  border-radius: 999px;
+  color: #102022;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0.42rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.vcs-tooltip .vcs-tooltip-body {
+  background: var(--vcs-suite-surface);
+  border-color: var(--vcs-suite-line);
+  color: var(--vcs-suite-muted);
+  padding: 1.35rem 1rem 1rem;
+}
+
+.vcs-tooltip .vcs-tooltip-body .vcs-tooltip-details > div {
+  border-bottom: 1px solid var(--vcs-suite-line);
+  gap: 0.16rem;
+  padding: 0.55rem 0;
+}
+
+.vcs-tooltip .vcs-tooltip-body .vcs-tooltip-details > div > span:first-child,
+.vcs-tooltip .vcs-tooltip-body .vcs-tooltip-properties h3 {
+  color: rgba(169, 184, 185, 0.68);
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.vcs-tooltip .vcs-tooltip-body .vcs-tooltip-details > div > span:last-child {
+  color: var(--vcs-suite-ink);
+  font-size: 0.95rem;
+}
+
+.vcs-tooltip .vcs-tooltip-body .vcs-tooltip-properties .vcs-tooltip-badge {
+  background: rgba(97, 208, 200, 0.16);
+  border: 1px solid rgba(97, 208, 200, 0.35);
+  border-radius: 999px;
+  color: #baf6e8;
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  padding: 0.38em 0.7em;
+}
+
+.vcs-combat-hud :is(*, *::before, *::after),
+.vcs-tooltip :is(*, *::before, *::after) {
+  scrollbar-color: rgba(97, 208, 200, 0.5) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vcs-combat-hud :is(*, *::before, *::after),
+  .vcs-tooltip :is(*, *::before, *::after) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Target-selection cursor never intercepts input. */
+.vcs-target-cursor {
+  position: fixed;
+  z-index: 100000;
+  pointer-events: none;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #a5efdf;
+  border-radius: 50%;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  background: rgba(18, 27, 32, 0.25);
+  box-shadow: 0 0 0 2px rgba(18, 27, 32, 0.8), 0 0 12px rgba(97, 208, 200, 0.5);
+}
+.vcs-target-cursor::before,
+.vcs-target-cursor::after {
+  content: "";
+  position: absolute;
+  background: #a5efdf;
+}
+.vcs-target-cursor::before { width: 36px; height: 2px; top: 11px; left: -6px; }
+.vcs-target-cursor::after { width: 2px; height: 36px; left: 11px; top: -6px; }
+
+/* The static preview resets the module's anchored Foundry position only. */
+.preview-stage .vcs-combat-hud {
+  bottom: auto;
+  left: auto;
+  position: relative;
+  transform: none;
+}
+
+
+
+
+/* Readable names over artwork and colored hover backgrounds. */
+.vcs-tooltip .vcs-tooltip-header h2,
+.vcs-tooltip .vcs-tooltip-header h2 *,
+.vcs-combat-hud .action-hud .action-element:is(:hover, :focus-visible, .active) .action-element-title,
+.vcs-combat-hud .ability-menu .ability-name:hover {
+  color: #fff;
+  -webkit-text-stroke: 0.35px #000;
+  paint-order: stroke fill;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/* Description popovers remain readable and scrollable under the pointer. */
+.locked-tooltip.vcs-tooltip-container, .locked-tooltip.vcs-tooltip-container .vcs-tooltip { pointer-events: auto; }
+.locked-tooltip.vcs-tooltip-container .vcs-tooltip-description { user-select: text; overscroll-behavior: contain; }
+
+/* Remove Foundry's orange locked-popup border; retain the inner Suite frame. */
+.locked-tooltip.vcs-tooltip-container {
+  border: 0;
+  outline: none;
+}
+
+/* Show feature descriptions without a fade or transition. */
+.vcs-tooltip-container, .vcs-tooltip-container .vcs-tooltip { transition: none !important; animation: none !important; }

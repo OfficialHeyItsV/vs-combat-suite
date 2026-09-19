@@ -1,0 +1,35 @@
+<div class="vcs-tooltip">
+  <div class="vcs-tooltip-header">
+    <h2>{{{title}}}</h2>
+  </div>
+  <div class="vcs-tooltip-body">
+    {{#if subtitle}}<h4 class="vcs-tooltip-subtitle" {{#if subtitlecolor}} style="background-color:{{subtitlecolor}}" {{/if}}>{{{subtitle}}}</h4>{{/if}}
+    {{#if description}}<div class="vcs-tooltip-description">{{{description}}}</div>{{/if}}
+    {{#if details.length}}
+    <div class="vcs-tooltip-details">
+      {{#each details}}
+      <div>
+        <span>{{{localize label}}}</span>
+        <span>{{{value}}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+    {{#if properties.length}}
+    <div class="vcs-tooltip-properties">
+      <h3>{{localize propertiesLabel}}</h3>
+      {{#each properties as |property|}}
+      {{#if property.label}}
+      {{#if property.isPrimary}}
+      <span class="vcs-tooltip-badge damt" {{#if property.color}} style="background-color:{{property.color}}" {{/if}}>{{{localize property.label}}}</span>
+      {{else}}
+      <span class="vcs-tooltip-badge prop" {{#if property.color}} style="background-color:{{property.color}}" {{/if}}>{{{localize property.label}}}</span>
+      {{/if}}
+      {{/if}}
+      {{/each}}
+    </div>
+    {{/if}}
+    {{#if footerText}}<i style="font-size: 0.8rem;">{{{footerText}}}</i>{{/if}}
+  </div>
+</div>
+
